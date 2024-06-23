@@ -1,0 +1,37 @@
+volumes:
+  tasks_data: {}
+
+services:
+  tasks_db:
+    container_name: tasks-db
+    image: postgres:16.1-alpine3.19
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - tasks_data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+
+  web_app:
+    container_name: web-app
+    build:
+      context: ./web_app
+      dockerfile: Dockerfile
+    ports:
+      - 8000:5000
+    environment:
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@tasks_db:5432/${DB_NAME}
+      SECRET_KEY: ${SECRET_KEY}
+    restart: always
+    depends_on:
+      tasks_db:
+        condition: service_healthy
