@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
@@ -7,11 +7,14 @@ from flask_jwt_extended import (
     jwt_required,
     get_jwt,
     get_jwt_identity,
+    get_current_user,
     unset_jwt_cookies,
 )
 
+from ..extensions import jwt
+
 from ..schemas.auth import UserResponseSchema, UserRegisterSchema, UserLoginSchema
-from ..models.auth import User, JWTTokenBlockList
+from ..models.auth import User
 from ..services.auth_services import AuthServices
 from ..helpers.auth import add_jwt_token_to_blacklist
 
@@ -38,7 +41,7 @@ def register():
 @auth_bp.get("/me")
 @jwt_required()
 def me():
-    current_user = get_jwt_identity()
+    current_user: User = get_current_user()
     schema = UserResponseSchema()
     serialized_user = schema.dump(current_user)
     return serialized_user, HTTP_200_OK
@@ -86,3 +89,16 @@ def logout():
     )
     unset_jwt_cookies(response)
     return response, HTTP_200_OK
+
+
+@jwt.token_in_blocklist_loader
+def check_if_token_in_blacklist(jwt_header, jwt_data):
+    from ..helpers.auth import is_jwt_token_in_blacklist
+
+    return is_jwt_token_in_blacklist(jwt_data)
+
+
+@jwt.user_lookup_loader
+def user_loader_callback(jwt_headers, jwt_payload):
+    identity = jwt_payload[current_app.config["JWT_IDENTITY_CLAIM"]]
+    return User.get_by_id(identity["id"])

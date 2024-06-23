@@ -10,12 +10,17 @@ from ..constants.http_status_codes import (
     HTTP_204_NO_CONTENT,
 )
 
+from ..decorators import auth_role
+from flask_jwt_extended import jwt_required
+
 tasks_bp = Blueprint("tasks", __name__, url_prefix="/api/tasks")
 
 tasks_service = TasksServices()
 
 
 @tasks_bp.route("/")
+@jwt_required()
+@auth_role("admin")
 def get_all_tasks():
     tasks = tasks_service.get_all_tasks()
     schema = TaskResponseSchema(many=True)
@@ -24,6 +29,8 @@ def get_all_tasks():
 
 
 @tasks_bp.post("/")
+@jwt_required()
+@auth_role("admin")
 def create_task():
     data = request.json
     schema = TaskCreationSchema()
@@ -36,6 +43,8 @@ def create_task():
 
 
 @tasks_bp.delete("/<int:id>")
+@jwt_required()
+@auth_role("admin")
 def delete_task(id):
     tasks_service.delete_task(id)
     return "", HTTP_204_NO_CONTENT

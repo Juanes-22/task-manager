@@ -26,11 +26,6 @@ def create_app(app_config: object = None) -> Flask:
     ma.init_app(app)
     jwt.init_app(app)
 
-    @jwt.token_in_blocklist_loader
-    def check_if_token_in_blacklist(jwt_header, jwt_data):
-        from .helpers.auth import is_jwt_token_in_blacklist
-        return is_jwt_token_in_blacklist(jwt_data)
-
     with app.app_context():
         db.create_all()
 
