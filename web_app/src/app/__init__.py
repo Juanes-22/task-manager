@@ -20,13 +20,11 @@ def create_app(app_config: object = None) -> Flask:
     app.register_blueprint(auth_bp)
     app.register_blueprint(errors_bp)
 
-    from .extensions import db, ma, jwt
+    from .extensions import db, ma, jwt, migrate
 
     db.init_app(app)
     ma.init_app(app)
     jwt.init_app(app)
-
-    with app.app_context():
-        db.create_all()
+    migrate.init_app(app, db)
 
     return app
