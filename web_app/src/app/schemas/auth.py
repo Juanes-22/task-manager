@@ -26,7 +26,8 @@ class UserRegisterSchema(ma.SQLAlchemySchema):
         required=True,
     )
     password = fields.String(
-        validate=validate.Length(min=8, max=30)
+        validate=validate.Length(min=8, max=30),
+        required=True
     )
 
     @post_load
