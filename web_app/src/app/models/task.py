@@ -1,7 +1,6 @@
 from typing import Optional
 from ..extensions import db
-from sqlalchemy import select
-from sqlalchemy import String, Text
+from sqlalchemy import select, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 
@@ -19,12 +18,12 @@ class Task(db.Model):
 
     @classmethod
     def get_all(cls) -> list["Task"]:
-        result = db.session.execute(select(Task))
+        result = db.session.execute(select(cls))
         return result.scalars().all()
 
     @classmethod
     def get_by_title(cls, title: str) -> Optional["Task"]:
-        result = db.session.execute(select(Task).where(Task.title == title))
+        result = db.session.execute(select(cls).where(cls.title == title))
         return result.scalars().first()
     
     def save(self) -> None:
