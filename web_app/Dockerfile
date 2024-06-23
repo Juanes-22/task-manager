@@ -18,4 +18,4 @@ ENV FLASK_RUN_HOST=0.0.0.0
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
-CMD ["gunicorn", "src.wsgi:app", "--bind", "0.0.0.0:5000", "--workers", "4"]
+ENTRYPOINT [ "run-prod.sh" ]
