@@ -10,12 +10,12 @@ from ..constants.http_status_codes import (
     HTTP_204_NO_CONTENT,
 )
 
-tasks_api_bp = Blueprint("tasks_api", __name__, url_prefix="/api/tasks")
+tasks_bp = Blueprint("tasks", __name__, url_prefix="/api/tasks")
 
 tasks_service = TasksServices()
 
 
-@tasks_api_bp.route("/")
+@tasks_bp.route("/")
 def get_all_tasks():
     tasks = tasks_service.get_all_tasks()
     schema = TaskResponseSchema(many=True)
@@ -23,7 +23,7 @@ def get_all_tasks():
     return jsonify(serialized_tasks), HTTP_200_OK
 
 
-@tasks_api_bp.post("/")
+@tasks_bp.post("/")
 def create_task():
     data = request.json
     schema = TaskCreationSchema()
@@ -35,7 +35,7 @@ def create_task():
     )
 
 
-@tasks_api_bp.delete("/<int:id>")
+@tasks_bp.delete("/<int:id>")
 def delete_task(id):
     tasks_service.delete_task(id)
     return "", HTTP_204_NO_CONTENT

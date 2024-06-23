@@ -1,7 +1,11 @@
 from ..models.task import Task
 from ..exceptions import BusinessError
 
-from ..constants.http_status_codes import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
+from ..constants.http_status_codes import (
+    HTTP_400_BAD_REQUEST,
+    HTTP_404_NOT_FOUND,
+    HTTP_409_CONFLICT,
+)
 
 
 class TasksServices:
@@ -11,7 +15,7 @@ class TasksServices:
         if existing_task:
             raise BusinessError(
                 message="Task with same title already exists",
-                status_code=HTTP_400_BAD_REQUEST,
+                status_code=HTTP_409_CONFLICT,
             )
 
         task.save()

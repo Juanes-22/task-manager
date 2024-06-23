@@ -4,18 +4,18 @@ from ..models.task import Task
 from ..forms import TaskForm
 from ..services.tasks_services import TasksServices
 
-tasks_web_bp = Blueprint("tasks_web", __name__, url_prefix="/tasks")
+web_bp = Blueprint("web", __name__)
 
 tasks_service = TasksServices()
 
 
-@tasks_web_bp.route("/")
+@web_bp.route("/")
 def list_tasks():
     tasks = tasks_service.get_all_tasks()
     return render_template("/tasks/list.html", tasks=tasks)
 
 
-@tasks_web_bp.route("/create", methods=["GET", "POST"])
+@web_bp.route("/tasks/create", methods=["GET", "POST"])
 def create_task():
     form = TaskForm()
 
@@ -33,7 +33,7 @@ def create_task():
     return render_template("/tasks/create.html", form=form)
 
 
-@tasks_web_bp.route("/<int:id>")
+@web_bp.route("/tasks/<int:id>")
 def delete_task(id):
     tasks_service.delete_task(id)
     flash("Task deleted successfully!", "success")
