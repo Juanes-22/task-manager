@@ -16,6 +16,7 @@ python-dotenv = "^1.0.1"
 Flask-WTF = "^1.2.1"
 gunicorn = "^22.0.0"
 flask-jwt-extended = "^4.6.0"
+flask-migrate = "^4.0.7"
 
 
 [build-system]
