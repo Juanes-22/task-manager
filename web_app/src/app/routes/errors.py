@@ -1,6 +1,4 @@
 from flask import Blueprint, jsonify, current_app
-import traceback
-import logging
 
 from werkzeug.exceptions import HTTPException
 from marshmallow import ValidationError
@@ -18,14 +16,9 @@ from ..extensions import db
 from ..extensions import jwt
 
 from ..exceptions import BusinessError
+from ..helpers.errors import log_error
 
 errors_bp = Blueprint("errors", __name__)
-
-
-def log_error(exc, traceback: bool = False):
-    logging.error(f"Exception: {exc.__class__.__name__} {exc}")
-    if traceback:
-        traceback.print_exc()
 
 
 def get_error_message(exc, default_message):
@@ -36,7 +29,7 @@ def get_error_message(exc, default_message):
 
 @errors_bp.app_errorhandler(BusinessError)
 def handle_business_error(exc):
-    log_error(exc, traceback=True)
+    log_error(exc, print_traceback=True)
     return jsonify({"error": exc.message}), exc.status_code
 
 
@@ -48,8 +41,8 @@ def handle_http_exception(exc):
 
 @errors_bp.app_errorhandler(Exception)
 def handle_unexpected_error(exc):
-    log_error(exc, traceback=True)
-    error_message = get_error_message(exc, "An unexpected error occurred.")
+    log_error(exc, print_traceback=True)
+    error_message = get_error_message(exc, "An unexpected error occurred")
     return jsonify({"error": error_message}), HTTP_500_INTERNAL_SERVER_ERROR
 
 
@@ -67,7 +60,7 @@ def handle_not_found(exc):
 
 @errors_bp.app_errorhandler(SQLAlchemyError)
 def handle_sqlalchemy_error(exc):
-    log_error(exc, traceback=True)
+    log_error(exc, print_traceback=True)
     db.session.rollback()
     error_message = get_error_message(exc, "A database error occurred")
     return jsonify({"error": error_message}), HTTP_500_INTERNAL_SERVER_ERROR
