@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, redirect, request, url_for, flash
 
-from ..models.task import Task
-from ..forms import TaskForm
-from ..services.tasks_services import TasksServices
+from .models import Task
+from .forms import TaskForm
+from .services import TasksServices
 
 web_bp = Blueprint("web", __name__)
 

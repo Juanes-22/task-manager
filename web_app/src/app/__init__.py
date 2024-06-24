@@ -10,10 +10,10 @@ def create_app(app_config: object = None) -> Flask:
 
     app.config.from_object(app_config)
 
-    from .routes.web import web_bp
-    from .routes.tasks import tasks_bp
-    from .routes.auth import auth_bp
-    from .routes.errors import errors_bp
+    from .tasks.views import web_bp
+    from .tasks.routes import tasks_bp
+    from .auth.routes import auth_bp
+    from .errors import errors_bp
 
     app.register_blueprint(web_bp)
     app.register_blueprint(tasks_bp)

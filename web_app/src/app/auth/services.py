@@ -1,5 +1,5 @@
-from ..models.auth import User
-from ..exceptions import BusinessError
+from .models import User
+from ..common.exceptions import BusinessError
 
 from ..constants.http_status_codes import (
     HTTP_400_BAD_REQUEST,

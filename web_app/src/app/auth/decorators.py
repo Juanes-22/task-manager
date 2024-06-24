@@ -3,9 +3,9 @@ from typing import Callable, Union
 from flask import abort
 from flask_jwt_extended import get_current_user
 
-from .models.auth import User
+from .models import User
 
-from .constants.http_status_codes import HTTP_403_FORBIDDEN
+from ..constants.http_status_codes import HTTP_403_FORBIDDEN
 
 import logging
 
