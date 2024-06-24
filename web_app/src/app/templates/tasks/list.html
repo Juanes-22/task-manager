@@ -2,12 +2,12 @@
 
 {% block content %}
     <h1>List of tasks</h1>
-    <a href="{{ url_for('tasks_web.create_task') }}">Create task</a>
+    <a href="{{ url_for('web.create_task') }}">Create task</a>
     {% for task in tasks %}
         <div>
             <h5>{{ task.title }}</h5>
 
-            <a href="{{ url_for('tasks_web.delete_task', id=task.id) }}">Delete</a>
+            <a href="{{ url_for('web.delete_task', id=task.id) }}">Delete</a>
             
             <p>{{ task.status }}</p>
             <p>{{ task.description }}</p>

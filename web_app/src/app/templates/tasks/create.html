@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>Create a new task</h1>
-    <form action="{{ url_for("tasks_web.create_task")}}" method="post">
+    <form action="{{ url_for("web.create_task")}}" method="post">
         {{ form.hidden_tag() }}
 
         {{ form.title.label }}
@@ -16,6 +16,6 @@
 
         {{ form.submit }}
     </form>
-    <a href="{{ url_for('tasks_web.list_tasks') }}">Back to Task List</a>
+    <a href="{{ url_for('web.list_tasks') }}">Back to Task List</a>
 
 {% endblock %}
