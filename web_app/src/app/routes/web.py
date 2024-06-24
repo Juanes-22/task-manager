@@ -28,7 +28,7 @@ def create_task():
         task = Task(**cleaned_data)
         tasks_service.create_task(task)
         flash("Task created successfully!", "success")
-        return redirect(url_for("tasks_web.list_tasks"))
+        return redirect(url_for("web.list_tasks"))
         
     return render_template("/tasks/create.html", form=form)
 
@@ -37,4 +37,4 @@ def create_task():
 def delete_task(id):
     tasks_service.delete_task(id)
     flash("Task deleted successfully!", "success")
-    return redirect(url_for("tasks_web.list_tasks"))
+    return redirect(url_for("web.list_tasks"))
