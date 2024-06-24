@@ -1,21 +1,19 @@
 FROM python:3.11-slim
 
-RUN apt-get update \
-    && apt-get -y install libpq-dev gcc
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-COPY requirements.txt .
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install poetry==1.8.2
 
-COPY src/ ./src
+COPY . .
 
 EXPOSE 5000
 
-ENV FLASK_APP=src/app
-ENV FLASK_RUN_HOST=0.0.0.0
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
-
-ENTRYPOINT [ "run-prod.sh" ]
+COPY run-prod.sh .
+RUN chmod +x run-prod.sh
+ENTRYPOINT ["./run-prod.sh"]

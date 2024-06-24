@@ -3,7 +3,7 @@
 export FLASK_ENV=production
 
 echo "Setting up virtual environment..."
-poetry install --no-dev
+poetry install --without dev
 
 echo "Running database migrations..."
 poetry run flask db upgrade

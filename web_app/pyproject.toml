@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "A simple Flask web application for a task management system."
 authors = ["Juan Esteban Garcia <juanesgarciamar@outlook.com>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -18,6 +19,10 @@ gunicorn = "^22.0.0"
 flask-jwt-extended = "^4.6.0"
 flask-migrate = "^4.0.7"
 
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+black = "^24.4.2"
 
 [build-system]
 requires = ["poetry-core"]
