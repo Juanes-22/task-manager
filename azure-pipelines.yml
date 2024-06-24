@@ -34,7 +34,7 @@ stages:
   displayName: Deploy to Azure Web App
   jobs:
   - job: Deploy
-    displayName: Build
+    displayName: Deploy
     pool:
       name: Default
     steps:
@@ -45,8 +45,8 @@ stages:
         multicontainerConfigFile: 'docker-compose.yml'
         containerCommand: 'docker compose up --build'
         appSettings: |
-          - $(JWT_SECRET_KEY)
-          - $(SECRET_KEY)
-          - $(DB_PASSWORD)
-          - DB_NAME=tasks_db
-          - DB_USER=postgres
+          JWT_SECRET_KEY=$(JWT_SECRET_KEY)
+          SECRET_KEY=$(SECRET_KEY)
+          DB_PASSWORD=$(DB_PASSWORD)
+          DB_NAME=tasks_db
+          DB_USER=postgres
