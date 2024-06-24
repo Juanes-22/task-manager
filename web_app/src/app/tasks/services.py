@@ -1,5 +1,5 @@
-from ..models.task import Task
-from ..exceptions import BusinessError
+from .models import Task
+from ..common.exceptions import BusinessError
 
 from ..constants.http_status_codes import (
     HTTP_400_BAD_REQUEST,

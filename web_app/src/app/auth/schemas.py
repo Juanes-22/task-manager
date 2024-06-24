@@ -1,7 +1,7 @@
 from marshmallow import fields, validate, post_load
 
 from ..extensions import ma
-from ..models.auth import User
+from .models import User
 
 
 class UserResponseSchema(ma.SQLAlchemySchema):

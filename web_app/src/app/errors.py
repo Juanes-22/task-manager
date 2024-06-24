@@ -4,7 +4,7 @@ from werkzeug.exceptions import HTTPException
 from marshmallow import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 
-from ..constants.http_status_codes import (
+from .constants.http_status_codes import (
     HTTP_401_UNAUTHORIZED,
     HTTP_500_INTERNAL_SERVER_ERROR,
     HTTP_400_BAD_REQUEST,
@@ -12,11 +12,11 @@ from ..constants.http_status_codes import (
     HTTP_403_FORBIDDEN,
 )
 
-from ..extensions import db
-from ..extensions import jwt
+from .extensions import db
+from .extensions import jwt
 
-from ..exceptions import BusinessError
-from ..helpers.errors import log_error
+from .common.exceptions import BusinessError
+from .common.helpers import log_error
 
 errors_bp = Blueprint("errors", __name__)
 

@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields, validate, post_load
 
 from ..extensions import ma
-from ..models.task import Task
+from .models import Task
 
 TASK_STATUS_CHOICES = {"pending", "completed"}
 

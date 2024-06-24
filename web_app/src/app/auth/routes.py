@@ -13,10 +13,10 @@ from flask_jwt_extended import (
 
 from ..extensions import jwt
 
-from ..schemas.auth import UserResponseSchema, UserRegisterSchema, UserLoginSchema
-from ..models.auth import User
-from ..services.auth_services import AuthServices
-from ..helpers.auth import add_jwt_token_to_blacklist
+from .schemas import UserResponseSchema, UserRegisterSchema, UserLoginSchema
+from .models import User
+from .services import AuthServices
+from .helpers import add_jwt_token_to_blacklist
 
 from ..constants.http_status_codes import (
     HTTP_200_OK,
@@ -93,7 +93,7 @@ def logout():
 
 @jwt.token_in_blocklist_loader
 def check_if_token_in_blacklist(jwt_header, jwt_data):
-    from ..helpers.auth import is_jwt_token_in_blacklist
+    from .helpers import is_jwt_token_in_blacklist
 
     return is_jwt_token_in_blacklist(jwt_data)
 

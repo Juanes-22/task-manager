@@ -1,4 +1,4 @@
-from ..models.auth import JWTTokenBlockList
+from .models import JWTTokenBlockList
 from flask_jwt_extended import (
     get_jwt
 )

@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, request
 
-from ..models.task import Task
-from ..schemas.tasks import TaskResponseSchema, TaskCreationSchema
-from ..services.tasks_services import TasksServices
+from .models import Task
+from .schemas import TaskResponseSchema, TaskCreationSchema
+from .services import TasksServices
 
 from ..constants.http_status_codes import (
     HTTP_200_OK,
@@ -10,7 +10,7 @@ from ..constants.http_status_codes import (
     HTTP_204_NO_CONTENT,
 )
 
-from ..decorators import auth_role
+from ..auth.decorators import auth_role
 from flask_jwt_extended import jwt_required
 
 tasks_bp = Blueprint("tasks", __name__, url_prefix="/api/tasks")
