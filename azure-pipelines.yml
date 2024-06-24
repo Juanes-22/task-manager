@@ -45,10 +45,4 @@ stages:
         multicontainerConfigFile: 'docker-compose.yml'
         containerCommand: 'docker compose up --build'
         appSettings: |
-          -JWT_SECRET_KEY $(JWT_SECRET_KEY) |
-          -SECRET_KEY $(SECRET_KEY) |
-          -DB_PASSWORD $(DB_PASSWORD) |
-          -DB_NAME tasks_db |
-          -DB_USER postgres |
-          -DOCKER_REGISTRY_SERVER_PASSWORD $(DOCKER_REGISTRY_SERVER_PASSWORD) |
-          -DOCKER_REGISTRY_SERVER_USERNAME $(DOCKER_REGISTRY_SERVER_USERNAME)
+          -JWT_SECRET_KEY $(JWT_SECRET_KEY) -SECRET_KEY $(SECRET_KEY) -DB_PASSWORD $(DB_PASSWORD) -DB_NAME tasks_db -DB_USER postgres -DOCKER_REGISTRY_SERVER_PASSWORD $(DOCKER_REGISTRY_SERVER_PASSWORD) -DOCKER_REGISTRY_SERVER_USERNAME $(DOCKER_REGISTRY_SERVER_USERNAME)
