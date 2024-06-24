@@ -27,3 +27,6 @@ stages:
         repository: 'juanes22/taskmanager'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
+        tags: |
+          $(tag)
+          latest
