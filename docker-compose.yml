@@ -23,7 +23,7 @@ services:
 
   web_app:
     container_name: web-app
-    image: juanes22/taskmanager
+    image: juanes22/taskmanager:latest
     ports:
       - 8000:5000
     environment:
