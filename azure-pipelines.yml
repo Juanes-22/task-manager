@@ -32,7 +32,8 @@ stages:
             latest
       - script: |
           echo "Listing files:"
-          ls -la
+          echo $(System.DefaultWorkingDirectory)
+          dir
         displayName: 'List files'
 
 - stage: Deploy
