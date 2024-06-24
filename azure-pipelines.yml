@@ -26,10 +26,14 @@ stages:
           containerRegistry: 'dockerhub'
           repository: 'juanes22/taskmanager'
           command: 'buildAndPush'
-          Dockerfile: './web_app/Dockerfile'
-          buildContext: './web_app/'
+          Dockerfile: '$(System.DefaultWorkingDirectory)/web_app/Dockerfile'
+          buildContext: '$(System.DefaultWorkingDirectory)/web_app'
           tags: |
             latest
+      - script: |
+          echo "Listing files:"
+          ls -la
+        displayName: 'List files'
 
 - stage: Deploy
   displayName: Deploy to Azure Web App
