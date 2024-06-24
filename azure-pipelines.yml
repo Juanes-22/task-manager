@@ -34,6 +34,7 @@ stages:
           echo "Listing files:"
           echo $(System.DefaultWorkingDirectory)
           dir
+          dos2unix $(System.DefaultWorkingDirectory)/web_app/run-prod.sh
         displayName: 'List files'
 
 - stage: Deploy
