@@ -29,3 +29,24 @@ stages:
         Dockerfile: '**/Dockerfile'
         tags: |
           latest
+
+- stage: Deploy
+  displayName: Deploy to Azure Web App
+  jobs:
+  - job: Deploy
+    displayName: Build
+    pool:
+      name: Default
+    steps:
+    - task: AzureWebAppContainer@1
+      inputs:
+        azureSubscription: 'Azure subscription 1(610b8b48-7874-42ff-a46b-330a718ea65a)'
+        appName: 'mytaskmanager'
+        multicontainerConfigFile: 'docker-compose.yml'
+        containerCommand: 'docker compose up --build'
+        appSettings: |
+          - $(JWT_SECRET_KEY)
+          - $(SECRET_KEY)
+          - $(DB_PASSWORD)
+          - DB_NAME=tasks_db
+          - DB_USER=postgres
