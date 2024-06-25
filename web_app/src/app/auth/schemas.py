@@ -2,6 +2,13 @@ from marshmallow import fields, validate, post_load
 
 from ..extensions import ma
 from .models import User
+from .constants import (
+    USERNAME_MIN_LENGTH,
+    USERNAME_MAX_LENGTH,
+    EMAIL_MAX_LENGTH,
+    PASSWORD_MIN_LENGTH,
+    PASSWORD_MAX_LENGTH,
+)
 
 
 class UserResponseSchema(ma.SQLAlchemySchema):
@@ -16,23 +23,25 @@ class UserRegisterSchema(ma.SQLAlchemySchema):
 
     username = fields.String(
         validate=validate.And(
-            validate.Length(max=20), validate.Regexp(r"^(?!\d)[a-zA-Z0-9_]+$")
+            validate.Length(min=USERNAME_MIN_LENGTH, max=USERNAME_MAX_LENGTH),
+            validate.Regexp(r"^(?!\d)[a-zA-Z0-9_]+$"),
         ),
         required=True,
     )
 
     email = fields.Email(
-        validate=validate.Length(max=100),
+        validate=validate.Length(max=EMAIL_MAX_LENGTH),
         required=True,
     )
     password = fields.String(
-        validate=validate.Length(min=8, max=30),
-        required=True
+        validate=validate.Length(min=PASSWORD_MIN_LENGTH, max=PASSWORD_MAX_LENGTH),
+        required=True,
     )
 
     @post_load
     def make_user(self, data, **kwargs):
         return User(**data)
+
 
 class UserLoginSchema(ma.SQLAlchemySchema):
     class Meta:

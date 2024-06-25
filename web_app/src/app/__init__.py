@@ -13,11 +13,13 @@ def create_app(app_config: object = None) -> Flask:
     from .tasks.views import web_bp
     from .tasks.routes import tasks_bp
     from .auth.routes import auth_bp
-    from .errors import errors_bp
+    from .auth.views import auth_web_bp
+    from .common.error_handlers import errors_bp
 
     app.register_blueprint(web_bp)
     app.register_blueprint(tasks_bp)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(auth_web_bp)
     app.register_blueprint(errors_bp)
 
     from .extensions import db, ma, jwt, migrate

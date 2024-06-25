@@ -1,10 +1,19 @@
-from flask import Blueprint, jsonify, current_app
+from flask import (
+    Blueprint,
+    flash,
+    jsonify,
+    current_app,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 
 from werkzeug.exceptions import HTTPException
 from marshmallow import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 
-from .constants.http_status_codes import (
+from ..constants.http_status_codes import (
     HTTP_401_UNAUTHORIZED,
     HTTP_500_INTERNAL_SERVER_ERROR,
     HTTP_400_BAD_REQUEST,
@@ -12,11 +21,11 @@ from .constants.http_status_codes import (
     HTTP_403_FORBIDDEN,
 )
 
-from .extensions import db
-from .extensions import jwt
+from ..extensions import db
+from ..extensions import jwt
 
-from .common.exceptions import BusinessError
-from .common.helpers import log_error
+from .exceptions import BusinessError
+from .helpers import log_error
 
 errors_bp = Blueprint("errors", __name__)
 
@@ -83,9 +92,17 @@ def handle_invalid_token(exc):
 def handle_missing_token(exc):
     log_error(exc)
     error_message = get_error_message(exc, "Unauthorized: missing token")
-    return jsonify({"error": error_message}), HTTP_401_UNAUTHORIZED
+    if request.path.startswith("/api"):
+        return jsonify({"error": error_message}), HTTP_401_UNAUTHORIZED
+    else:
+        flash("Please log in to access this page.", "info")
+        return redirect(url_for("auth_web.login"))
 
 
 @jwt.expired_token_loader
 def handle_expired_token(jwt_header, jwt_data):
-    return jsonify({"error": "Token expired"}), HTTP_400_BAD_REQUEST
+    if request.path.startswith("/api"):
+        return jsonify({"error": "Token expired"}), HTTP_401_UNAUTHORIZED
+    else:
+        flash("Please log in to access this page.", "info")
+        return redirect(url_for("auth_web.login"))
