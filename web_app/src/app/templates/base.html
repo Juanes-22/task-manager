@@ -3,12 +3,30 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Task manager</title>
-
-        <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+        <title>Task Manager</title>
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}"
+        />
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}" />
     </head>
     <body>
-        {% block content %}{% endblock %}
+        <header>{% include '_nav.html' %}</header>
+
+        <main class="container mt-5">
+            <section>
+                <header>
+                    {% block title %} {% endblock %}
+                    <hr />
+                </header>
+                {% block content %} {% endblock %}
+            </section>
+        </main>
+        {% include '_footer.html' %}
     </body>
-    <script defer src="../static/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script
+        defer
+        src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"
+    ></script>
 </html>
