@@ -29,4 +29,8 @@ def create_app(app_config: object = None) -> Flask:
     jwt.init_app(app)
     migrate.init_app(app, db)
 
+    from .comands import register_commands
+
+    register_commands(app)
+
     return app
