@@ -1,0 +1,55 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- develop
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      name: Default
+    steps:
+      - task: Docker@2
+        displayName: Build and push an image
+        inputs:
+          containerRegistry: 'dockerhub'
+          repository: 'juanes22/taskmanager'
+          command: 'buildAndPush'
+          Dockerfile: '$(System.DefaultWorkingDirectory)/web_app/Dockerfile'
+          buildContext: '$(System.DefaultWorkingDirectory)/web_app'
+          tags: |
+            latest
+      - script: |
+          echo "Listing files:"
+          echo $(System.DefaultWorkingDirectory)
+          dir
+          dos2unix $(System.DefaultWorkingDirectory)/web_app/run-prod.sh
+        displayName: 'List files'
+
+- stage: Deploy
+  displayName: Deploy to Azure Web App
+  jobs:
+  - job: Deploy
+    displayName: Deploy
+    pool:
+      name: Default
+    steps:
+    - task: AzureWebAppContainer@1
+      inputs:
+        azureSubscription: 'Azure subscription 1(610b8b48-7874-42ff-a46b-330a718ea65a)'
+        appName: 'mytaskmanager'
+        multicontainerConfigFile: 'docker-compose.yml'
+        containerCommand: 'docker compose up --build'
+        appSettings: |
+          -JWT_SECRET_KEY $(JWT_SECRET_KEY) -SECRET_KEY $(SECRET_KEY) -DB_PASSWORD $(DB_PASSWORD) -DB_NAME tasks_db -DB_USER postgres -DOCKER_REGISTRY_SERVER_PASSWORD $(DOCKER_REGISTRY_SERVER_PASSWORD) -DOCKER_REGISTRY_SERVER_USERNAME $(DOCKER_REGISTRY_SERVER_USERNAME)

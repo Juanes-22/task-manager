@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block title %}
+<div class="d-flex w-100 justify-content-between">
+    <h1>🗒️My Tasks</h1>
+    <a href="{{ url_for('web.create_task') }}" class="btn btn-outline-primary mb-3" role="button"
+        >Create Task</a
+    >
+</div>
+{% endblock %}
+
+{% block content %}
+    <article class="container">
+        {% if tasks %}
+        <div class="list-group list-group-flush">
+            {% for task in tasks %}
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-1"><a href="#" class="text-primary">{{ task.title }}</a></h5>
+                        <p class="mb-1">{{ task.status }}</p>
+                        <small class="mb-1 text-muted">{{ task.description }}</small>
+                    </div>
+                    <div>
+                        <a
+                            href="{{ url_for('web.delete_task', id=task.id) }}"
+                            class="btn btn-danger btn-sm"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 448 512"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                            >
+                                <path
+                                    fill="currentColor"
+                                    d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                                />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            <p>No tasks found. Please create a new task.</p>
+        {% endif %}
+    </article>
+{% endblock %}
