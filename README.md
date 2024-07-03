@@ -1,4 +1,5 @@
-# Task Management System README
+# Task Management System
+![task-manager-dashboard](https://github.com/Juanes-22/task-manager/assets/91810892/5ff0ee23-3059-462e-a3ee-4e4fd0ca9cd3)
 
 ## Overview
 
